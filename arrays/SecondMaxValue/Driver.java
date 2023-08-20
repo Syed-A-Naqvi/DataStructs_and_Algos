@@ -16,9 +16,11 @@ public class Driver {
         int max = arr[0], secondMax = arr[0];
 
         for (int i = 0; i < arr.length; i++) {
+            //sets the maximum value encountered thus far
             if (arr[i] > max){
                 max = arr[i];
             }
+            //if a value greater than the current secondmax is encountered that is also less than the current max OR if the value of secondmax = max, secondmax updated
             else if ((arr[i] > secondMax && arr[i] < max) || (secondMax == max)){
                 secondMax = arr[i];
             }
