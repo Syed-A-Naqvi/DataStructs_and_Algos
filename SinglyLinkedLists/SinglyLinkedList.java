@@ -302,4 +302,103 @@ public class SinglyLinkedList {
         this.display();
 
     }
+
+    //find the middle node
+    public Node getMiddleNode() {
+        
+        if(this.head == null){
+            System.out.println("Empty list!");
+            return null;
+        }
+        else if (this.head.getNext() == null){
+            return this.head;
+        }
+
+        // int middle = this.length()/2;
+        // Node currNode = this.head;
+
+        // for (int i = 0  ; i < middle; i++) {
+        //     currNode = currNode.getNext();
+        // }
+
+        // return currNode;
+
+        //this is another middle node retrieving algorithm that uses less time complexity
+        Node slowPtr = this.head;
+        Node fastPtr = this.head;
+
+        while (fastPtr != null && fastPtr.getNext() != null){
+            slowPtr = slowPtr.getNext();
+            fastPtr = fastPtr.getNext().getNext();
+        }
+
+        return slowPtr;
+
+    }
+
+    //find nth node from the end of the list
+    public Node nthNodeFromEnd(int n) {
+        
+        int count = 1;
+        Node lastNode = this.head;
+        Node nthNode = this.head;
+
+        while (lastNode.getNext() != null){
+            if(count >= n){
+                nthNode = nthNode.getNext();
+            }
+            lastNode = lastNode.getNext();
+            count++;
+        }
+
+        return nthNode;
+
+    }
+
+    //remove duplicates from sorted linked list
+    public void removeDuplicates() {
+
+        System.out.println("\n Original List: ");
+        this.display();
+
+        Node currentNode = this.head;
+
+        while (currentNode != null && currentNode.getNext() != null){
+
+            if(currentNode.getData() == currentNode.getNext().getData()){
+                currentNode.setNext(currentNode.getNext().getNext());
+            }
+            else{
+                currentNode = currentNode.getNext();
+            }
+
+        }
+
+        System.out.println("Duplicates Removed:");
+        this.display();
+        
+    }
+
+    //insert a node in a sorted linked list
+    public void insertInSortedList(int data) {
+        
+        Node node = new Node(data);
+        
+        Node currentNode = this.head;
+        Node previousNode = null;
+
+        if(this.head == null){
+            this.head = node;
+        }
+        else if(currentNode.getData() > data){
+            node.setNext(currentNode);
+            this.head = node;
+        }
+        else {
+            while (currentNode != null && currentNode.getData() < data){
+                
+            }
+        }
+
+    }
 }

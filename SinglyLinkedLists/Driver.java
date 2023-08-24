@@ -38,6 +38,26 @@ public class Driver {
         System.out.println();
 
         list.reverseList();
+        System.out.println();
+
+        System.out.println("The middle element is " + list.getMiddleNode().getData() + ".");
+        System.out.println();
+
+        System.out.println("The 1st node from the end of the list is " + list.nthNodeFromEnd(1).getData() + ".");
+        System.out.println();
+
+        SinglyLinkedList sortedList = new SinglyLinkedList();
+        sortedList.appendNode(0);
+        sortedList.appendNode(1);
+        sortedList.appendNode(2);
+        sortedList.appendNode(2);
+        sortedList.appendNode(6);
+        sortedList.appendNode(10);
+        sortedList.appendNode(15);
+
+        sortedList.removeDuplicates();
+        sortedList.insertInSortedList(11);
+        sortedList.display();
 
     }
 }
