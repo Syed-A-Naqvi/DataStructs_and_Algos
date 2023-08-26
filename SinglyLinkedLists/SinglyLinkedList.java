@@ -182,27 +182,30 @@ public class SinglyLinkedList {
         
     }
     public void removeNodeElement(int searchKey) {
-        Node currentNode = this.head.getNext();
-        Node previousNode = this.head;
+        Node currentNode = this.head;
+        Node previousNode = null;
         int removedCount = 0;
 
-        while(currentNode != null){
-            if(this.head.getData() == searchKey){
-                this.head = this.head.getNext();
-                currentNode = currentNode.getNext();
-                previousNode = this.head;
-                removedCount++;
+        if(this.head == null){
+            System.out.println("List empty. Exiting...");
+        }
+        else if (this.head.getData() == searchKey){
+            currentNode = currentNode.getNext();
+            this.head = currentNode;
+            removedCount++;
+        }
+        else{
+            while(currentNode != null){
+                if(currentNode.getData() != searchKey){
+                    previousNode = currentNode;
+                    currentNode = currentNode.getNext();
+                }
+                else{
+                    previousNode.setNext(currentNode.getNext());
+                    currentNode = currentNode.getNext();
+                    removedCount++;
+                }
             }
-            else if(currentNode.getData() == searchKey) {
-                currentNode = currentNode.getNext();
-                previousNode.setNext(currentNode);
-                removedCount++;
-            }
-            else{
-                previousNode = currentNode;
-                currentNode = currentNode.getNext();
-            }
-            
         }
 
         System.out.println("Removed " + removedCount + " nodes matching the searchkey " + searchKey + ".");
@@ -395,10 +398,29 @@ public class SinglyLinkedList {
             this.head = node;
         }
         else {
-            while (currentNode != null && currentNode.getData() < data){
-                
+            while (currentNode != null){
+                if(currentNode.getData() < data){
+                    previousNode = currentNode;
+                    currentNode = currentNode.getNext();
+                }
+                else{
+                    break;
+                }
             }
+            previousNode.setNext(node);
+            node.setNext(currentNode);
         }
-
+        this.display();
     }
+
+    //Detect and remove a loop from a singly linked list
+    public boolean removeLoop() {
+
+        Node slowPtr = this.head;
+        Node fastPtr = this.head;
+
+        
+        
+    }
+
 }

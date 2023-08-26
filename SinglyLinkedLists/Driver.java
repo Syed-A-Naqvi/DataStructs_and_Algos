@@ -56,8 +56,11 @@ public class Driver {
         sortedList.appendNode(15);
 
         sortedList.removeDuplicates();
-        sortedList.insertInSortedList(11);
-        sortedList.display();
+        sortedList.insertInSortedList(3);
 
+        SinglyLinkedList single = new SinglyLinkedList(10);
+        single.removeNodeElement(10);
+
+ 
     }
 }
