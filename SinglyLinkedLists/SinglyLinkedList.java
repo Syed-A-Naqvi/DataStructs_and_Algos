@@ -38,6 +38,15 @@ public class SinglyLinkedList {
 
     private Node head;
 
+    //getter
+    public Node getHead() {
+        return head;
+    }
+
+    // setter
+    public void setHead(Node head) {
+        this.head = head;
+    }
 
     //constructors
     public SinglyLinkedList(){
@@ -419,7 +428,32 @@ public class SinglyLinkedList {
         Node slowPtr = this.head;
         Node fastPtr = this.head;
 
-        
+        while (true){
+
+            if (fastPtr == null || fastPtr.getNext() == null){
+                System.out.println("No loop exists in the linked list.");
+                return false;
+            }
+
+            slowPtr = slowPtr.getNext();
+            fastPtr = fastPtr.getNext().getNext();
+
+            if (fastPtr == slowPtr){
+                break;
+            }
+            
+        }
+    
+        slowPtr = this.head;
+
+        while (slowPtr.getNext() != fastPtr.getNext()){
+            slowPtr = slowPtr.getNext();
+            fastPtr = fastPtr.getNext();
+        }
+
+        fastPtr.setNext(null);
+        System.out.println("Loop from linked list successfully removed.");
+        return true;
         
     }
 
