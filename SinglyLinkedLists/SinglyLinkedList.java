@@ -74,8 +74,6 @@ public class SinglyLinkedList {
             }
             currentNode.setNext(node);
         }
-        
-        this.display();
 
     }
     public void prependNode(int data) {
@@ -89,8 +87,6 @@ public class SinglyLinkedList {
             node.setNext(this.head);
             this.head = node;
         }
-
-        this.display();
 
     }
     public void insertNode(int position, int data) {
@@ -114,7 +110,36 @@ public class SinglyLinkedList {
             Node newNode = new Node(data);
             newNode.setNext(previousNode.getNext());
             previousNode.setNext(newNode);
-            this.display();
+        }
+
+    }
+    //insert a node in a sorted linked list
+    public void insertInSortedList(int data) {
+        
+        Node node = new Node(data);
+        
+        Node currentNode = this.head;
+        Node previousNode = null;
+
+        if(this.head == null){
+            this.head = node;
+        }
+        else if(currentNode.getData() > data){
+            node.setNext(currentNode);
+            this.head = node;
+        }
+        else {
+            while (currentNode != null){
+                if(currentNode.getData() < data){
+                    previousNode = currentNode;
+                    currentNode = currentNode.getNext();
+                }
+                else{
+                    break;
+                }
+            }
+            previousNode.setNext(node);
+            node.setNext(currentNode);
         }
 
     }
@@ -124,7 +149,6 @@ public class SinglyLinkedList {
         
         if(this.head == null){
             System.out.println("Nothing to delete. exitting...");
-            this.display();;
             return null;
         }
         else{
@@ -132,7 +156,6 @@ public class SinglyLinkedList {
             this.head = this.head.getNext();
             tempNode.setNext(null);
             System.out.println("First node removed successfully.");
-            this.display();
             return tempNode;
         }
 
@@ -141,7 +164,6 @@ public class SinglyLinkedList {
         
         if(this.head == null){
             System.out.println("Nothing to delete. exitting...");
-            this.display();
             return null;
         }
         else if(this.head.getNext() == null){
@@ -155,7 +177,6 @@ public class SinglyLinkedList {
             Node tempNode = currentNode.getNext();
             currentNode.setNext(null);
             System.out.println("Last node removed successfully.");
-            this.display();
             return tempNode;
         }        
     }
@@ -180,12 +201,10 @@ public class SinglyLinkedList {
             Node temp = currentNode.getNext();
             currentNode.setNext(currentNode.getNext().getNext());
             System.out.println("Node at position " + position + " removed successfully.");
-            this.display();;
             return temp;
         }
         else{
             System.out.println("Position " + position + " out of bounds. Nothing removed.");
-            this.display();
             return null;
         }
         
@@ -218,7 +237,6 @@ public class SinglyLinkedList {
         }
 
         System.out.println("Removed " + removedCount + " nodes matching the searchkey " + searchKey + ".");
-        this.display();
 
     }
 
@@ -391,70 +409,200 @@ public class SinglyLinkedList {
         
     }
 
-    //insert a node in a sorted linked list
-    public void insertInSortedList(int data) {
+    //Detect a loop in a linked list
+    public boolean detectLoop() {
         
-        Node node = new Node(data);
-        
-        Node currentNode = this.head;
-        Node previousNode = null;
+        Node slowPtr = this.head;
+        Node fastPtr = this.head;
 
-        if(this.head == null){
-            this.head = node;
-        }
-        else if(currentNode.getData() > data){
-            node.setNext(currentNode);
-            this.head = node;
-        }
-        else {
-            while (currentNode != null){
-                if(currentNode.getData() < data){
-                    previousNode = currentNode;
-                    currentNode = currentNode.getNext();
-                }
-                else{
-                    break;
-                }
+        while(true){
+
+            if(fastPtr == null || fastPtr.getNext() == null){
+                return false;
             }
-            previousNode.setNext(node);
-            node.setNext(currentNode);
+
+            fastPtr = fastPtr.getNext().getNext();
+            slowPtr = slowPtr.getNext();
+
+            if(fastPtr == slowPtr){
+                return true;
+            }
+
         }
-        this.display();
+
+    }
+
+    //Get node at start of loop
+    public Node getStartOfLoop() {
+        
+        Node slowPtr = this.head;
+        Node fastPtr = this.head;
+
+        while(true){
+
+            if(fastPtr == null || fastPtr.getNext() == null){
+                return null;
+            }
+
+            fastPtr = fastPtr.getNext().getNext();
+            slowPtr = slowPtr.getNext();
+
+            if(fastPtr == slowPtr){
+                break;
+            }
+
+        }
+
+        fastPtr = this.head;
+
+        while (fastPtr != slowPtr){
+            fastPtr = fastPtr.getNext();
+            slowPtr = slowPtr.getNext();
+        }
+
+        return slowPtr;
+
     }
 
     //Detect and remove a loop from a singly linked list
     public boolean removeLoop() {
 
-        Node slowPtr = this.head;
-        Node fastPtr = this.head;
+        Node loopStart = this.getStartOfLoop();
+        Node lastNode = loopStart;
 
-        while (true){
+        while (lastNode.getNext() != loopStart){
+            lastNode = lastNode.getNext();
+        }
 
-            if (fastPtr == null || fastPtr.getNext() == null){
-                System.out.println("No loop exists in the linked list.");
-                return false;
+        lastNode.setNext(null);
+
+        return true;
+
+    }
+
+    //merge two sorted singly linked lists
+    public static Node mergeSortedLists(SinglyLinkedList list1, SinglyLinkedList list2){
+
+        Node a = list1.getHead();
+        Node b = list2.getHead();
+        Node dummy = new Node(0);
+        Node tail = dummy;
+
+        while(a != null && b != null){
+
+            if (a.getData() <= b.getData()){
+                tail.setNext(a);
+                a = a.getNext();
+            }
+            else{
+                tail.setNext(b);
+                b = b.getNext();
+            }
+            tail = tail.getNext();
+
+        }
+
+        if(list1.getHead() == null && list2.getHead() == null){
+            return null;
+        }
+        else if (list1.getHead() == null){
+            dummy.setNext(list2.getHead());
+        }
+        else if (list2.getHead() == null){
+            dummy.setNext(list1.getHead());
+        }
+        else {
+            if(a == null){
+                tail.setNext(b);
+            }
+            else{
+                tail.setNext(a);
+            }
+        }
+
+        return dummy.getNext();
+
+    }
+
+    //adding two non-negative numbers, each represented using a singly linked list
+    public Node add(SinglyLinkedList num1, SinglyLinkedList num2) {
+        
+        Node a = num1.getHead();
+        Node b = num2.getHead();
+        Node dummy = new Node(0);
+        Node tail = dummy;
+        int digit = 0;
+        int sum = 0;
+        int carry = 0;
+
+        if(a == null || b == null){
+            System.out.println("Please input two linked lists representing two non-zero integers in reverse.");
+            return null;
+        }
+
+        tail.setNext(a);
+
+        while (a != null && b != null){
+
+            tail = tail.getNext();
+            
+            sum = a.getData() + b.getData() + carry;
+            
+            if(sum<10){
+                digit = sum;
+                carry = 0;
+            }
+            else{
+                digit = sum%10;
+                carry = 1;
             }
 
-            slowPtr = slowPtr.getNext();
-            fastPtr = fastPtr.getNext().getNext();
-
-            if (fastPtr == slowPtr){
+            if(a.getNext() == null && b.getNext() == null){
+                tail.setData(digit);
+                tail.setNext(new Node(carry));
                 break;
             }
-            
+            else{
+                tail.setData(digit);
+                a = a.getNext();
+                b = b.getNext();
+            }
+
         }
+
+        if(a == null){
+            tail.setNext(b);
+            while(b != null){
     
-        slowPtr = this.head;
+                tail = tail.getNext();
+    
+                sum = b.getData() + carry;
+            
+                if(sum<10){
+                    digit = sum;
+                    carry = 0;
+                }
+                else{
+                    digit = sum%10;
+                    carry = 1;
+                    
+                }
 
-        while (slowPtr.getNext() != fastPtr.getNext()){
-            slowPtr = slowPtr.getNext();
-            fastPtr = fastPtr.getNext();
+                if(b.getNext() == null){
+                    tail.setData(digit);
+                    tail.setNext(new Node(carry));
+                    break;
+                }
+                else{
+                    tail.setData(digit);
+                    a = a.getNext();
+                    b = b.getNext();
+                }
+            }
         }
 
-        fastPtr.setNext(null);
-        System.out.println("Loop from linked list successfully removed.");
-        return true;
         
     }
+    
 
 }
