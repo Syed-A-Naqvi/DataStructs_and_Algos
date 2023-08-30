@@ -526,80 +526,8 @@ public class SinglyLinkedList {
 
     //adding two non-negative numbers, each represented using a singly linked list
     public Node add(SinglyLinkedList num1, SinglyLinkedList num2) {
+
         
-        Node a = num1.getHead();
-        Node b = num2.getHead();
-        Node dummy = new Node(0);
-        Node tail = dummy;
-        int digit = 0;
-        int sum = 0;
-        int carry = 0;
-
-        if(a == null || b == null){
-            System.out.println("Please input two linked lists representing two non-zero integers in reverse.");
-            return null;
-        }
-
-        tail.setNext(a);
-
-        while (a != null && b != null){
-
-            tail = tail.getNext();
-            
-            sum = a.getData() + b.getData() + carry;
-            
-            if(sum<10){
-                digit = sum;
-                carry = 0;
-            }
-            else{
-                digit = sum%10;
-                carry = 1;
-            }
-
-            if(a.getNext() == null && b.getNext() == null){
-                tail.setData(digit);
-                tail.setNext(new Node(carry));
-                break;
-            }
-            else{
-                tail.setData(digit);
-                a = a.getNext();
-                b = b.getNext();
-            }
-
-        }
-
-        if(a == null){
-            tail.setNext(b);
-            while(b != null){
-    
-                tail = tail.getNext();
-    
-                sum = b.getData() + carry;
-            
-                if(sum<10){
-                    digit = sum;
-                    carry = 0;
-                }
-                else{
-                    digit = sum%10;
-                    carry = 1;
-                    
-                }
-
-                if(b.getNext() == null){
-                    tail.setData(digit);
-                    tail.setNext(new Node(carry));
-                    break;
-                }
-                else{
-                    tail.setData(digit);
-                    a = a.getNext();
-                    b = b.getNext();
-                }
-            }
-        }
 
         
     }
